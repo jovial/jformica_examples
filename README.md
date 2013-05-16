@@ -13,8 +13,16 @@ OSX:
 
 Common:
 - import into eclipse
-- fix JRE/JDk setup
+- fix JRE/JDk setup (see section below)
 - compile and run
+
+Fix JRE:
+- right click imported project
+- click properties
+- When dialog appears, click 'Java Build Path'
+- click 'JRE system library'
+- click edit
+- select an execution environment that exists on your system (Workspace default?)
 
 Where is the source?
 

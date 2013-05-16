@@ -12,7 +12,7 @@ OSX:
 - should work, but not sure if there are additonal steps. 
 
 Common:
-- import into eclipse
+- import project dir into eclipse e.g jformica_java
 - fix JRE/JDk setup (see section below)
 - compile and run
 

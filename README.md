@@ -11,9 +11,12 @@ Linux:
 OSX:
 - should work, but not sure if there are additonal steps. 
 
+Common:
 - import into eclipse
 - fix JRE/JDk setup
 - compile and run
+
+Where is the source?
 
 source code for usb4java : https://github.com/kayahr/usb4java
 source code for jformica: https://github.com/cowboy-coders/JFormica/tree/jformica_branch

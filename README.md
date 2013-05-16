@@ -26,5 +26,5 @@ Fix JRE:
 
 Where is the source?
 
-source code for usb4java : https://github.com/kayahr/usb4java
-source code for jformica: https://github.com/cowboy-coders/JFormica/tree/jformica_branch
+- source code for usb4java : https://github.com/kayahr/usb4java
+- source code for jformica: https://github.com/cowboy-coders/JFormica/tree/jformica_branch

@@ -15,7 +15,8 @@ import org.cowboycoders.ant.messages.data.BroadcastDataMessage;
 class Listener implements BroadcastListener<BroadcastDataMessage> {
 	
 	/*
-	 * One registered with a channel, this is called every time a broadcast message is received
+	 * Once an instance of this class is registered with a channel, 
+	 * this is called every time a broadcast message is received
 	 * on that channel.
 	 * 
 	 * (non-Javadoc)

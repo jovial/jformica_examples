@@ -56,10 +56,10 @@ public class BasicHeartRateMonitor {
 	private static final boolean HRM_PAIRING_FLAG = false;
 
 	/*
-	 * Should match device transmission flag
+	 * Should match device transmission id (0-255). Special rules
+	 * apply for shared channels. See ANT+ protocol.
 	 * 
-	 * 0: wildcard
-	 * 1: tx/rx
+	 * 0: wildcard, matches any value (slave only) 
 	 */
 	private static final int HRM_TRANSMISSION_TYPE = 0;
 	

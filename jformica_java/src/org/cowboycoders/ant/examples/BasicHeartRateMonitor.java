@@ -56,8 +56,9 @@ public class BasicHeartRateMonitor {
 	private static final boolean HRM_PAIRING_FLAG = false;
 
 	/*
-	 * slave:
-	 * 0: receive only
+	 * Should match device transmission flag
+	 * 
+	 * 0: wildcard
 	 * 1: tx/rx
 	 */
 	private static final int HRM_TRANSMISSION_TYPE = 0;
@@ -94,15 +95,26 @@ public class BasicHeartRateMonitor {
 		// optional: enable console logging with Level = LOG_LEVEL
 		setupLogging();
 		
-		// first usb ant-stick
+		/*
+		 * Choose driver: AndroidAntTransceiver or AntTransceiver
+		 * 
+		 * AntTransceiver(int deviceNumber)
+		 * deviceNumber : 0 ... number of usb sticks plugged in
+		 * 0: first usb ant-stick
+		 */
 		AntTransceiver antchip = new AntTransceiver(0);
 		
+		// initialises node with chosen driver 
 		Node node = new Node(antchip);
-
+		
+		// ANT+ key 
 		NetworkKey key = new NetworkKey(0xB9,0xA5,0x21,0xFB,0xBD,0x72,0xC3,0x45);
 		key.setName("N:ANT+");
-
+		
+		/* must be called before any configuration takes place */
 		node.start();
+		
+		/* sends reset request : resets channels to default state */
 		node.reset();
 
 		// sets network key of network zero
@@ -112,7 +124,8 @@ public class BasicHeartRateMonitor {
 		
 		// Arbitrary name : useful for identifying channel
 		channel.setName("C:HRM");
-
+		
+		// choose slave or master type. Constructors exist to set two-way/one-way and shared/non-shared variants.
 		ChannelType channelType = new SlaveChannelType();
 		
 		// use ant network key "N:ANT+" 
@@ -120,6 +133,8 @@ public class BasicHeartRateMonitor {
 		
 		// registers an instance of our callback with the channel
 		channel.registerRxListener(new Listener(), BroadcastDataMessage.class);
+		
+		/******* start device specific configuration ******/
 
 		channel.setId(HRM_DEVICE_ID, HRM_DEVICE_TYPE, HRM_TRANSMISSION_TYPE, HRM_PAIRING_FLAG);
 
@@ -127,19 +142,27 @@ public class BasicHeartRateMonitor {
 
 		channel.setPeriod(HRM_CHANNEL_PERIOD);
 		
+		/******* end device specific configuration ******/
+		
+		// timeout before we give up looking for device
 		channel.setSearchTimeout(Channel.SEARCH_TIMEOUT_NEVER);
-
+		
+		// start listening
 		channel.open();
 		
 		// Listen for 60 seconds
 		Thread.sleep(60000);
-
+		
+		// stop listening
 		channel.close();
+		
+		// resets channel configuration
 		channel.unassign();
 
 		//return the channel to the pool of available channels
 		node.freeChannel(channel);
-
+		
+		// cleans up : gives up control of usb device etc.
 		node.stop();
 		
 	}

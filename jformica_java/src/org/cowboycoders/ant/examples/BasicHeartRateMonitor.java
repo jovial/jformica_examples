@@ -1,5 +1,6 @@
 package org.cowboycoders.ant.examples;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
@@ -7,10 +8,15 @@ import org.cowboycoders.ant.Channel;
 import org.cowboycoders.ant.NetworkKey;
 import org.cowboycoders.ant.Node;
 import org.cowboycoders.ant.events.BroadcastListener;
+import org.cowboycoders.ant.events.MessageCondition;
+import org.cowboycoders.ant.events.MessageConditionFactory;
 import org.cowboycoders.ant.interfaces.AntTransceiver;
 import org.cowboycoders.ant.messages.ChannelType;
 import org.cowboycoders.ant.messages.SlaveChannelType;
+import org.cowboycoders.ant.messages.commands.ChannelRequestMessage;
+import org.cowboycoders.ant.messages.commands.ChannelRequestMessage.Request;
 import org.cowboycoders.ant.messages.data.BroadcastDataMessage;
+import org.cowboycoders.ant.messages.responses.ChannelIdResponse;
 
 class Listener implements BroadcastListener<BroadcastDataMessage> {
 	
@@ -89,6 +95,34 @@ public class BasicHeartRateMonitor {
 	    AntTransceiver.LOGGER.addHandler(handler);
 	}
 	
+	public static void printChannelConfig(Channel channel) {
+		
+		// build request
+		ChannelRequestMessage msg = new  ChannelRequestMessage(channel.getNumber(),Request.CHANNEL_ID);
+		
+		// response should be an instance of ChannelIdResponse
+		MessageCondition condition = MessageConditionFactory.newInstanceOfCondition(ChannelIdResponse.class);
+		
+		try {
+			
+			// send request (blocks until reply received or timeout expired)
+			ChannelIdResponse response = (ChannelIdResponse) channel.sendAndWaitForMessage(
+					msg, condition, 5L, TimeUnit.SECONDS, null);
+			
+			System.out.println();
+			System.out.println("Device configuration: ");
+			System.out.println("deviceID: " + response.getDeviceNumber());
+			System.out.println("deviceType: " + response.getDeviceType());
+			System.out.println("transmissionType: " + response.getTransmissionType());
+			System.out.println("pairing flag set: " + response.isPairingFlagSet());
+			System.out.println();
+			
+		} catch (Exception e) {
+			// not critical, so just print error
+			e.printStackTrace();
+		}
+	}
+	
 
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -155,6 +189,11 @@ public class BasicHeartRateMonitor {
 		
 		// stop listening
 		channel.close();
+		
+		// optional : demo requesting of channel configuration. If device connected
+		// this will reflect actual device id, transmission type etc. This info will allow 
+		// you to only connect to this device in the future.
+		printChannelConfig(channel);
 		
 		// resets channel configuration
 		channel.unassign();

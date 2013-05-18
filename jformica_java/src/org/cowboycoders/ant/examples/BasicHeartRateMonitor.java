@@ -33,8 +33,12 @@ class Listener implements BroadcastListener<BroadcastDataMessage> {
 		/*
 		 * getData() returns the 8 byte payload. The current heart rate
 		 * is contained in the last byte.
+		 * 
+		 * Note: remember the lack of unsigned bytes in java, so unsigned values
+		 * should be converted to ints for any arithmetic / display - getUnsignedData()
+		 * is a utility method to do this.
 		 */
-		System.out.println("Heart rate: " + message.getData()[7]);
+		System.out.println("Heart rate: " + message.getUnsignedData()[7]);
 	}
 
 }

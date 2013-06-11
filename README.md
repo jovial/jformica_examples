@@ -24,6 +24,17 @@ Fix JRE:
 - click edit
 - select an execution environment that exists on your system (Workspace default?)
 
+TROUBLESHOOTING:
+
+Here are some errors and solutions that have been reported.
+
+Windows:
+
+EXCEPTION_ACCESS_VIOLATION in libusb usbi-read :
+
+Try updating Zadig or installing the latest libusk from: http://libusbk.sourceforge.net/UsbK3/index.html
+
+
 Where is the source?
 
 - source code for usb4java : https://github.com/kayahr/usb4java

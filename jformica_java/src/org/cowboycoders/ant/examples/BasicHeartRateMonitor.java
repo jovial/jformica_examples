@@ -88,7 +88,7 @@ public class BasicHeartRateMonitor {
 	private static final int HRM_DEVICE_ID = 0;
 	
 	
-	public static final Level LOG_LEVEL = Level.SEVERE;
+	public static final Level LOG_LEVEL = Level.ALL;
 	
 	public static void setupLogging() {
 		// set logging level
@@ -97,6 +97,8 @@ public class BasicHeartRateMonitor {
 	    // PUBLISH this level
 	    handler.setLevel(LOG_LEVEL);
 	    AntTransceiver.LOGGER.addHandler(handler);
+	    // Don't duplicate messages by sending to parent handler as well
+	    AntTransceiver.LOGGER.setUseParentHandlers(false);
 	}
 	
 	public static void printChannelConfig(Channel channel) {

@@ -1,4 +1,4 @@
-package org.cowboycoders.ant.examples;
+package org.cowboycoders.ant.examples.demos;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.ConsoleHandler;

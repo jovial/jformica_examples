@@ -1,6 +1,5 @@
-package org.cowboycoders.ant.examples;
+package org.cowboycoders.ant.examples.demos.unfinished.scales;
 
-import java.util.concurrent.TimeUnit;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
@@ -8,52 +7,60 @@ import org.cowboycoders.ant.Channel;
 import org.cowboycoders.ant.NetworkKey;
 import org.cowboycoders.ant.Node;
 import org.cowboycoders.ant.events.BroadcastListener;
-import org.cowboycoders.ant.events.MessageCondition;
-import org.cowboycoders.ant.events.MessageConditionFactory;
+import org.cowboycoders.ant.examples.Utils;
 import org.cowboycoders.ant.interfaces.AntTransceiver;
 import org.cowboycoders.ant.messages.ChannelType;
 import org.cowboycoders.ant.messages.SlaveChannelType;
-import org.cowboycoders.ant.messages.commands.ChannelRequestMessage;
-import org.cowboycoders.ant.messages.commands.ChannelRequestMessage.Request;
 import org.cowboycoders.ant.messages.data.BroadcastDataMessage;
-import org.cowboycoders.ant.messages.responses.ChannelIdResponse;
+import org.cowboycoders.ant.messages.data.DataMessage;
 
-class Listener implements BroadcastListener<BroadcastDataMessage> {
+
+
+//class Gendera {
+//	public static int MALE = 0x00;
+//}
+
+/**
+ * Connects to ANT+ enabled scales e.g tanita (untested)
+ * @author will
+ *
+ */
+public class Scales {
 	
-	/*
-	 * Once an instance of this class is registered with a channel, 
-	 * this is called every time a broadcast message is received
-	 * on that channel.
-	 * 
-	 * (non-Javadoc)
-	 * @see org.cowboycoders.ant.events.BroadcastListener#receiveMessage(java.lang.Object)
-	 */
-	@Override
-	public void receiveMessage(BroadcastDataMessage message) {
+	private static class Listener implements BroadcastListener<BroadcastDataMessage> {
+		
 		/*
-		 * getData() returns the 8 byte payload. The current heart rate
-		 * is contained in the last byte.
+		 * Once an instance of this class is registered with a channel, 
+		 * this is called every time a broadcast message is received
+		 * on that channel.
 		 * 
-		 * Note: remember the lack of unsigned bytes in java, so unsigned values
-		 * should be converted to ints for any arithmetic / display - getUnsignedData()
-		 * is a utility method to do this.
+		 * (non-Javadoc)
+		 * @see org.cowboycoders.ant.events.BroadcastListener#receiveMessage(java.lang.Object)
 		 */
-		System.out.println("Heart rate: " + message.getUnsignedData()[7]);
+		@Override
+		public void receiveMessage(BroadcastDataMessage message) {
+			/*
+			 * getData() returns the 8 byte payload. The current heart rate
+			 * is contained in the last byte.
+			 * 
+			 * Note: remember the lack of unsigned bytes in java, so unsigned values
+			 * should be converted to ints for any arithmetic / display - getUnsignedData()
+			 * is a utility method to do this.
+			 */
+			System.out.println("Heart rate: " + message.getUnsignedData()[7]);
+		}
+
 	}
-
-}
-
-public class BasicHeartRateMonitor {
 	
 	/*
 	 * See ANT+ data sheet for explanation
 	 */
-	private static final int HRM_CHANNEL_PERIOD = 8070;
+	private static final int SCALES_CHANNEL_PERIOD = 8192;
 	
 	/*
 	 * See ANT+ data sheet for explanation
 	 */
-	private static final int HRM_CHANNEL_FREQ = 57;
+	private static final int ANTPLUS_CHANNEL_FREQ = 57;
 	
 	/*
 	 * This should match the device you are connecting with.
@@ -63,7 +70,7 @@ public class BasicHeartRateMonitor {
 	 * 
 	 * See ANT+ docs.
 	 */
-	private static final boolean HRM_PAIRING_FLAG = false;
+	private static final boolean SCALES_PAIRING_FLAG = false;
 
 	/*
 	 * Should match device transmission id (0-255). Special rules
@@ -71,12 +78,12 @@ public class BasicHeartRateMonitor {
 	 * 
 	 * 0: wildcard, matches any value (slave only) 
 	 */
-	private static final int HRM_TRANSMISSION_TYPE = 0;
+	private static final int SCALES_TRANSMISSION_TYPE = 0;
 	
 	/*
 	 * device type for ANT+ heart rate monitor 
 	 */
-	private static final int HRM_DEVICE_TYPE = 120;
+	private static final int SCALES_DEVICE_TYPE = 119;
 	
 	/*
 	 * You should make a note of the device id and use it in preference to the wild card
@@ -85,7 +92,7 @@ public class BasicHeartRateMonitor {
 	 * 0: wild card, matches all device ids
 	 * any other number: match specific device id
 	 */
-	private static final int HRM_DEVICE_ID = 0;
+	private static final int SCALES_DEVICE_ID = 0;
 	
 	
 	public static final Level LOG_LEVEL = Level.ALL;
@@ -101,35 +108,6 @@ public class BasicHeartRateMonitor {
 	    AntTransceiver.LOGGER.setUseParentHandlers(false);
 	}
 	
-	public static void printChannelConfig(Channel channel) {
-		
-		// build request
-		ChannelRequestMessage msg = new  ChannelRequestMessage(channel.getNumber(),Request.CHANNEL_ID);
-		
-		// response should be an instance of ChannelIdResponse
-		MessageCondition condition = MessageConditionFactory.newInstanceOfCondition(ChannelIdResponse.class);
-		
-		try {
-			
-			// send request (blocks until reply received or timeout expired)
-			ChannelIdResponse response = (ChannelIdResponse) channel.sendAndWaitForMessage(
-					msg, condition, 5L, TimeUnit.SECONDS, null);
-			
-			System.out.println();
-			System.out.println("Device configuration: ");
-			System.out.println("deviceID: " + response.getDeviceNumber());
-			System.out.println("deviceType: " + response.getDeviceType());
-			System.out.println("transmissionType: " + response.getTransmissionType());
-			System.out.println("pairing flag set: " + response.isPairingFlagSet());
-			System.out.println();
-			
-		} catch (Exception e) {
-			// not critical, so just print error
-			e.printStackTrace();
-		}
-	}
-	
-
 	public static void main(String[] args) throws InterruptedException {
 		
 		// optional: enable console logging with Level = LOG_LEVEL
@@ -172,15 +150,15 @@ public class BasicHeartRateMonitor {
 		channel.assign("N:ANT+", channelType);
 		
 		// registers an instance of our callback with the channel
-		channel.registerRxListener(new Listener(), BroadcastDataMessage.class);
+		//channel.registerRxListener(new Listener(), DataMessage.class);
 		
 		/******* start device specific configuration ******/
 
-		channel.setId(HRM_DEVICE_ID, HRM_DEVICE_TYPE, HRM_TRANSMISSION_TYPE, HRM_PAIRING_FLAG);
+		channel.setId(SCALES_DEVICE_ID, SCALES_DEVICE_TYPE, SCALES_TRANSMISSION_TYPE, SCALES_PAIRING_FLAG);
 
-		channel.setFrequency(HRM_CHANNEL_FREQ);
+		channel.setFrequency(ANTPLUS_CHANNEL_FREQ);
 
-		channel.setPeriod(HRM_CHANNEL_PERIOD);
+		channel.setPeriod(SCALES_CHANNEL_PERIOD);
 		
 		/******* end device specific configuration ******/
 		
@@ -199,7 +177,7 @@ public class BasicHeartRateMonitor {
 		// optional : demo requesting of channel configuration. If device connected
 		// this will reflect actual device id, transmission type etc. This info will allow 
 		// you to only connect to this device in the future.
-		printChannelConfig(channel);
+		Utils.printChannelConfig(channel);
 		
 		// resets channel configuration
 		channel.unassign();

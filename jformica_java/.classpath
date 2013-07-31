@@ -9,14 +9,14 @@
 	<classpathentry kind="lib" path="lib/usb4java-1.0.0-no-natives.jar"/>
 	<classpathentry kind="lib" path="lib/usb4java-1.0.0-sources.jar"/>
 	<classpathentry kind="lib" path="lib/usb4java-1.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/jformica_core-0.0.5.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/jformica_java/doc/jformica_core-0.0.5-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/jformica_jsr80-0.0.5.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/jformica_java/doc/jformica_jsr80-0.0.3-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jformica_core-0.0.5-SNAPSHOT.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/jformica_java/doc/jformica_core-0.0.5-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>

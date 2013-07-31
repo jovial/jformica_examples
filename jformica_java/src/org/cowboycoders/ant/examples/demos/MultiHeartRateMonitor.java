@@ -181,15 +181,6 @@ public class MultiHeartRateMonitor {
 	 */
 	private static final int HRM_DEVICE_TYPE = 120;
 	
-	/*
-	 * You should make a note of the device id and use it in preference to the wild card
-	 * to pair to a specific device.
-	 * 
-	 * 0: wild card, matches all device ids
-	 * any other number: match specific device id
-	 */
-	private static final int HRM_DEVICE_ID = 0;
-	
 	private static final ChannelId HRM_WILDCARD_CHANNEL_ID = ChannelId.Builder.newInstance()
 			.setDeviceNumber(ChannelId.WILDCARD)
 			.setDeviceType(HRM_DEVICE_TYPE)

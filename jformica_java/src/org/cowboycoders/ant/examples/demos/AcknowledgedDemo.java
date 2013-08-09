@@ -1,33 +1,26 @@
 package org.cowboycoders.ant.examples.demos;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
-
 import org.cowboycoders.ant.Channel;
 import org.cowboycoders.ant.ChannelId;
-import org.cowboycoders.ant.NetworkKey;
 import org.cowboycoders.ant.Node;
 import org.cowboycoders.ant.TransferException;
 import org.cowboycoders.ant.events.BroadcastListener;
 import org.cowboycoders.ant.events.MessageCondition;
 import org.cowboycoders.ant.events.MessageConditionFactory;
+import org.cowboycoders.ant.examples.NetworkKeys;
 import org.cowboycoders.ant.interfaces.AntTransceiver;
 import org.cowboycoders.ant.messages.ChannelType;
 import org.cowboycoders.ant.messages.DeviceInfoQueryable;
 import org.cowboycoders.ant.messages.MasterChannelType;
-import org.cowboycoders.ant.messages.MessageId;
 import org.cowboycoders.ant.messages.SlaveChannelType;
-import org.cowboycoders.ant.messages.StandardMessage;
 import org.cowboycoders.ant.messages.data.AcknowledgedDataMessage;
 import org.cowboycoders.ant.messages.data.BroadcastDataMessage;
-import org.cowboycoders.ant.messages.nonstandard.CombinedBurst;
-import org.cowboycoders.ant.messages.responses.ResponseCode;
-import org.cowboycoders.ant.messages.responses.Response;
+
 /**
  * Sends / receives a burst and prints channel id from extended bytes. Requires 2 ant chips!
  * @author will
@@ -165,7 +158,7 @@ public class AcknowledgedDemo {
 		channel.setName(name);
 		
 		// use ant network key "N:ANT+" 
-		channel.assign("N:ANT+", type);
+		channel.assign(NetworkKeys.ANT_SPORT, type);
 		
 		/******* start device specific configuration ******/
 
@@ -195,9 +188,6 @@ public class AcknowledgedDemo {
 		Node node = new Node(antchip);
 		Node node2 = new Node(antchip2);
 		
-		// ANT+ key 
-		NetworkKey key = new NetworkKey(0xB9,0xA5,0x21,0xFB,0xBD,0x72,0xC3,0x45);
-		key.setName("N:ANT+");
 		
 		/* must be called before any configuration takes place */
 		node.start();
@@ -207,10 +197,6 @@ public class AcknowledgedDemo {
 		node.reset();
 		
 		node.setLibConfig(true, false, false);
-
-		// sets network key of network zero
-		node.setNetworkKey(0, key);
-		node2.setNetworkKey(0, key);
 		
 		final Channel master = node2.getFreeChannel();
 		

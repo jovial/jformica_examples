@@ -5,13 +5,12 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
 import org.cowboycoders.ant.Channel;
-import org.cowboycoders.ant.NetworkKey;
 import org.cowboycoders.ant.Node;
 import org.cowboycoders.ant.events.BroadcastListener;
 import org.cowboycoders.ant.events.MessageCondition;
 import org.cowboycoders.ant.events.MessageConditionFactory;
+import org.cowboycoders.ant.examples.NetworkKeys;
 import org.cowboycoders.ant.interfaces.AntTransceiver;
-
 import org.cowboycoders.ant.messages.ChannelType;
 import org.cowboycoders.ant.messages.SlaveChannelType;
 import org.cowboycoders.ant.messages.commands.ChannelRequestMessage;
@@ -180,7 +179,6 @@ public class BasicSpeedAndCadence {
 	/*
 	 * See ANT+ data sheet for explanation
 	 */
-	private static final int HRM_CHANNEL_PERIOD = 8070;
 	private static final int ANT_SPORT_SPEED_PERIOD = 8086;
 
 	/*
@@ -209,7 +207,6 @@ public class BasicSpeedAndCadence {
 	/*
 	 * device type for ANT+ heart rate monitor
 	 */
-	private static final int HRM_DEVICE_TYPE = 120; // 0x78
 	private static final int ANT_SPORT_SandC_TYPE = 121; // 0x78
 
 	/*
@@ -281,11 +278,6 @@ public class BasicSpeedAndCadence {
 		// initialises node with chosen driver
 		Node node = new Node(antchip);
 
-		// ANT+ key
-		NetworkKey key = new NetworkKey(0xB9, 0xA5, 0x21, 0xFB, 0xBD, 0x72,
-				0xC3, 0x45);
-		key.setName("N:ANT+");
-
 		/* must be called before any configuration takes place */
 		node.start();
 
@@ -295,9 +287,6 @@ public class BasicSpeedAndCadence {
 		// specs say wait 500ms after reset before sending any more host
 		// commands
 		Thread.sleep(500);
-
-		// sets network key of network zero
-		node.setNetworkKey(0, key);
 
 		Channel channel = node.getFreeChannel();
 
@@ -309,7 +298,7 @@ public class BasicSpeedAndCadence {
 		ChannelType channelType = new SlaveChannelType();
 
 		// use ant network key "N:ANT+"
-		channel.assign("N:ANT+", channelType);
+		channel.assign(NetworkKeys.ANT_SPORT, channelType);
 
 		// registers an instance of our callback with the channel
 		channel.registerRxListener(new Listener(), BroadcastDataMessage.class);

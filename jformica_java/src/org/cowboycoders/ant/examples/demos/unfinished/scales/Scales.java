@@ -4,7 +4,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
 import org.cowboycoders.ant.Channel;
-import org.cowboycoders.ant.NetworkKey;
 import org.cowboycoders.ant.Node;
 import org.cowboycoders.ant.events.BroadcastListener;
 import org.cowboycoders.ant.examples.NetworkKeys;
@@ -13,7 +12,6 @@ import org.cowboycoders.ant.interfaces.AntTransceiver;
 import org.cowboycoders.ant.messages.ChannelType;
 import org.cowboycoders.ant.messages.SlaveChannelType;
 import org.cowboycoders.ant.messages.data.BroadcastDataMessage;
-import org.cowboycoders.ant.messages.data.DataMessage;
 
 
 

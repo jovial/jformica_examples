@@ -53,7 +53,7 @@ public class BurstDemo {
 					System.out.println();
 					System.out.println("Ex. id:" + d.getDeviceNumber());
 					System.out.println("Ex. tran:" + d.getTransmissionType());
-					System.out.println("Ex. type:" + (d.getDeviceType().intValue() & 0xff));
+					System.out.println("Ex. type:" + (d.getDeviceType()));
 					System.out.println();
 				}
 

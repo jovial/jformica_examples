@@ -207,6 +207,7 @@ public class BasicSpeedAndCadence {
 	/*
 	 * device type for ANT+ heart rate monitor
 	 */
+	
 	private static final int ANT_SPORT_SandC_TYPE = 121; // 0x78
 
 	/*

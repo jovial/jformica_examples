@@ -6,9 +6,9 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
 import org.cowboycoders.ant.Channel;
-import org.cowboycoders.ant.NetworkKey;
 import org.cowboycoders.ant.Node;
 import org.cowboycoders.ant.events.BroadcastListener;
+import org.cowboycoders.ant.examples.NetworkKeys;
 import org.cowboycoders.ant.examples.Utils;
 import org.cowboycoders.ant.interfaces.AntTransceiver;
 import org.cowboycoders.ant.messages.ChannelType;
@@ -132,19 +132,12 @@ public class ScalesSpoofer {
 		// initialises node with chosen driver
 		Node node = new Node(antchip);
 
-		// ANT+ key
-		NetworkKey key = new NetworkKey(0xB9, 0xA5, 0x21, 0xFB, 0xBD, 0x72,
-				0xC3, 0x45);
-		key.setName("N:ANT+");
-
 		/* must be called before any configuration takes place */
 		node.start();
 
 		/* sends reset request : resets channels to default state */
 		node.reset();
 
-		// sets network key of network zero
-		node.setNetworkKey(0, key);
 
 		final Channel channel = node.getFreeChannel();
 
@@ -156,7 +149,7 @@ public class ScalesSpoofer {
 		ChannelType channelType = new MasterChannelType();
 
 		// use ant network key "N:ANT+"
-		channel.assign("N:ANT+", channelType);
+		channel.assign(NetworkKeys.ANT_SPORT, channelType);
 
 		// registers an instance of our callback with the channel
 		 channel.registerRxListener(new Listener(), BroadcastDataMessage.class);

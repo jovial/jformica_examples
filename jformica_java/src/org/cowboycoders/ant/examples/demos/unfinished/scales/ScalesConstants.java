@@ -1,8 +1,5 @@
 package org.cowboycoders.ant.examples.demos.unfinished.scales;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.RoundingMode;
 
 import org.cowboycoders.ant.utils.ByteUtils;
 
